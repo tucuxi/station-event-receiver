@@ -13,6 +13,7 @@ var (
     name string
     path string
     port int
+    debug bool
 )
 
 func init() {
@@ -20,11 +21,15 @@ func init() {
     flag.StringVar(&name, "name", "stationid", "Station id parameter name")
     flag.StringVar(&path, "path", "/", "Request path")
     flag.IntVar(&port, "port", 8080, "Port number")
+    flag.BoolVar(&debug, "debug", false, "Print request")
 }
 
 func handleRequest(w http.ResponseWriter, req *http.Request) {
     stationId := req.FormValue(name)
-    log.Println(req.Method, "Arrived at station", stationId)
+    if debug {
+        log.Println(req.Method, req.URL)
+    }
+    log.Println("Arrived at station", stationId)
     time.Sleep(time.Duration(delay) * time.Millisecond)
 }
 
